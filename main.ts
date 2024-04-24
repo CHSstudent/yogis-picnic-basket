@@ -289,3 +289,7 @@ let picnicFoodList = [
 "chicken",
 "apple"
 ]
+for (let index = 0; index <= 4; index++) {
+    picnicFood.setImage(picnicFoodImages[index])
+    pause(500)
+}
