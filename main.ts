@@ -1,3 +1,39 @@
+// let picnicFoodList: string[] = []
+function check_strikes () {
+    if (strikes == 3) {
+        game.splash("You lose!")
+        game.gameOver(false)
+    }
+}
+function check_score () {
+    if (info.score() == 5) {
+        game.splash("You win!")
+        game.gameOver(true)
+    }
+}
+function calc_guess (user_guess: string) {
+    match = 0
+    for (let index = 0; index <= picnicFoodList.length - 1; index++) {
+        if (picnicFoodList[index] == user_guess) {
+            match = 1
+        }
+    }
+    if (match == 1) {
+        music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
+        info.changeScoreBy(1)
+        game.splash("Your score is: " + info.score())
+    } else {
+        music.play(music.melodyPlayable(music.wawawawaa), music.PlaybackMode.UntilDone)
+        strikes += 1
+        game.splash("That's " + strikes + " strike(s)!")
+    }
+    check_score()
+    check_strikes()
+}
+let match = 0
+let user_guess = ""
+let strikes = 0
+let picnicFoodList: string[] = []
 scene.setBackgroundImage(img`
     2222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111
     2222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111222221111122222111112222211111
@@ -280,7 +316,7 @@ img`
     . . . . . 2 2 e e e e . . . . . 
     `
 ]
-let picnicFoodList = [
+picnicFoodList = [
 "strawberry",
 "strawberries",
 "cake",
@@ -289,3 +325,14 @@ let picnicFoodList = [
 "chicken",
 "apple"
 ]
+for (let index2 = 0; index2 <= 4; index2++) {
+    picnicFood.setImage(picnicFoodImages[index2])
+    pause(500)
+}
+sprites.destroy(picnicFood)
+info.setScore(0)
+strikes = 0
+while (info.score() < 5 || strikes < 3) {
+    user_guess = game.askForString("What food items are found inside of Yogi's basket?")
+    calc_guess(user_guess)
+}
